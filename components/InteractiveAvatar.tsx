@@ -2,7 +2,8 @@ import type { StartAvatarResponse } from "@heygen/streaming-avatar";
 
 import StreamingAvatar, {
   AvatarQuality,
-  StreamingEvents, TaskType, VoiceEmotion,
+  StreamingEvents,
+  VoiceEmotion,
 } from "@heygen/streaming-avatar";
 import {
   Button,
@@ -10,7 +11,6 @@ import {
   CardBody,
   CardFooter,
   Divider,
-  Input,
   Select,
   SelectItem,
   Spinner,
@@ -23,7 +23,7 @@ import { useMemoizedFn, usePrevious } from "ahooks";
 
 import InteractiveAvatarTextInput from "./InteractiveAvatarTextInput";
 
-import {AVATARS, STT_LANGUAGE_LIST} from "@/app/lib/constants";
+import { AVATARS, STT_LANGUAGE_LIST } from "@/app/lib/constants";
 
 export default function InteractiveAvatar() {
   const [isLoadingSession, setIsLoadingSession] = useState(false);
@@ -32,7 +32,7 @@ export default function InteractiveAvatar() {
   const [debug, setDebug] = useState<string>();
   const [knowledgeId, setKnowledgeId] = useState<string>("");
   const [avatarId, setAvatarId] = useState<string>(AVATARS[0].avatar_id);
-  const [language, setLanguage] = useState<string>('en');
+  const [language, setLanguage] = useState<string>("en");
 
   const [data, setData] = useState<StartAvatarResponse>();
   const [text, setText] = useState<string>("");
@@ -92,7 +92,8 @@ export default function InteractiveAvatar() {
         quality: AvatarQuality.High,
         avatarName: avatarId,
         // knowledgeId: knowledgeId, // Or use a custom `knowledgeBase`.
-        knowledgeBase: "You're an AI Tutor powered by MyASI that seeks to help the user understand academic topics.",
+        knowledgeBase:
+          "You're an AI Tutor powered by MyASI that seeks to help the user understand academic topics.",
         voice: {
           rate: 1.5, // 0.5 ~ 1.5
           emotion: VoiceEmotion.EXCITED,
@@ -129,11 +130,9 @@ export default function InteractiveAvatar() {
 
       return;
     }
-    await avatar.current
-      .interrupt()
-      .catch((e) => {
-        setDebug(e.message);
-      });
+    await avatar.current.interrupt().catch((e) => {
+      setDebug(e.message);
+    });
   }
   async function endSession() {
     await avatar.current?.stopAvatar();
@@ -153,6 +152,7 @@ export default function InteractiveAvatar() {
   });
 
   const previousText = usePrevious(text);
+
   useEffect(() => {
     if (!previousText && text) {
       avatar.current?.startListening();
@@ -182,7 +182,10 @@ export default function InteractiveAvatar() {
       <Card>
         <CardBody className="h-[500px] flex flex-col justify-center items-center">
           {stream ? (
-            <div className="h-[500px] justify-center items-center flex rounded-lg overflow-hidden" style={{width: '100%'}}>
+            <div
+              className="h-[500px] justify-center items-center flex rounded-lg overflow-hidden"
+              style={{ width: "100%" }}
+            >
               <video
                 ref={mediaStream}
                 autoPlay
@@ -221,13 +224,13 @@ export default function InteractiveAvatar() {
                   Select Avatar
                 </p>
                 <Select
+                  defaultSelectedKeys={[avatarId]}
                   placeholder="Select one from these example avatars"
                   size="md"
+                  value={avatarId}
                   onChange={(e) => {
                     setAvatarId(e.target.value);
                   }}
-                  value={avatarId}
-                  defaultSelectedKeys={[avatarId]}
                 >
                   {AVATARS.map((avatar) => (
                     <SelectItem
@@ -239,18 +242,16 @@ export default function InteractiveAvatar() {
                   ))}
                 </Select>
                 <Select
+                  className="max-w-xs"
                   label="Select language"
                   placeholder="Select language"
-                  className="max-w-xs"
                   selectedKeys={[language]}
                   onChange={(e) => {
                     setLanguage(e.target.value);
                   }}
                 >
                   {STT_LANGUAGE_LIST.map((lang) => (
-                    <SelectItem key={lang.key}>
-                      {lang.label}
-                    </SelectItem>
+                    <SelectItem key={lang.key}>{lang.label}</SelectItem>
                   ))}
                 </Select>
               </div>
@@ -297,8 +298,8 @@ export default function InteractiveAvatar() {
           ) : (
             <div className="w-full text-center">
               <Button
-                isDisabled={!isUserTalking}
                 className="bg-gradient-to-tr from-indigo-500 to-indigo-300 text-white"
+                isDisabled={!isUserTalking}
                 size="md"
                 variant="shadow"
               >
