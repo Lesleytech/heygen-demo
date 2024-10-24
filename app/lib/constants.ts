@@ -22,6 +22,7 @@ export const AVATARS = [
 ];
 
 export const STT_LANGUAGE_LIST = [
+  { label: "Arabic", value: "ar", key: "ar" },
   { label: "Bulgarian", value: "bg", key: "bg" },
   { label: "Chinese", value: "zh", key: "zh" },
   { label: "Czech", value: "cs", key: "cs" },
